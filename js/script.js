@@ -13,17 +13,7 @@ function loadMenu() {
     .then(html => {
       document.getElementById('menu').innerHTML = html;
 
-      // Insertar enlaces del menú
-      const navLinks = document.getElementById('navLinks');
-      if (navLinks) {
-        navLinks.innerHTML = `
-          <li class="nav-item"><a class="nav-link text-danger fw-bold" href="${basePath}index.html">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link text-danger fw-bold" href="${basePath}html/servicios.html">Servicios</a></li>
-          <li class="nav-item"><a class="nav-link text-danger fw-bold" href="${basePath}html/contacto.html">Contacto</a></li>
-        `;
-      }
-
-      // Configurar logo
+      // Configurar logo y enlaces directamente en el HTML
       const logo = document.getElementById('logoMenu');
       if (logo) {
         logo.src = basePath + 'img/LOGO_VS_.png';
@@ -52,7 +42,6 @@ function loadFooter() {
 // ✅ FUNCIÓN: Modo oscuro persistente
 // ==========================================================
 function setupDarkModeToggle() {
-  // Aplicar si estaba activo previamente
   if (localStorage.getItem('darkMode') === 'on') {
     document.body.classList.add('dark-mode');
   }
@@ -111,7 +100,6 @@ function setupCustomCarousel() {
       });
     }
 
-    // Cambio automático cada 5 segundos
     setInterval(() => {
       current = (current + 1) % images.length;
       showImage(current);
@@ -128,4 +116,3 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCardHoverEffects();
   setupCustomCarousel();
 });
-
