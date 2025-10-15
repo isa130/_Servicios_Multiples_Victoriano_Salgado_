@@ -1,5 +1,58 @@
-// ✅ Función para activar modo oscuro persistente
+// ==========================================================
+// ✅ CONFIGURACIÓN GLOBAL
+// ==========================================================
+const isInHtmlFolder = window.location.pathname.includes('/html/');
+const basePath = isInHtmlFolder ? '../' : '';
+
+// ==========================================================
+// ✅ FUNCIÓN: Cargar el menú dinámicamente
+// ==========================================================
+function loadMenu() {
+  fetch(basePath + 'html/menu.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('menu').innerHTML = html;
+
+      // Insertar enlaces del menú
+      const navLinks = document.getElementById('navLinks');
+      if (navLinks) {
+        navLinks.innerHTML = `
+          <li class="nav-item"><a class="nav-link text-danger fw-bold" href="${basePath}index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link text-danger fw-bold" href="${basePath}html/servicios.html">Servicios</a></li>
+          <li class="nav-item"><a class="nav-link text-danger fw-bold" href="${basePath}html/contacto.html">Contacto</a></li>
+        `;
+      }
+
+      // Configurar logo
+      const logo = document.getElementById('logoMenu');
+      if (logo) {
+        logo.src = basePath + 'img/LOGO_VS_.png';
+        logo.parentElement.href = basePath + 'index.html';
+      }
+
+      // Activar modo oscuro después de insertar el botón
+      setupDarkModeToggle();
+    })
+    .catch(err => console.error('Error cargando el menú:', err));
+}
+
+// ==========================================================
+// ✅ FUNCIÓN: Cargar el footer dinámicamente
+// ==========================================================
+function loadFooter() {
+  fetch(basePath + 'html/footer.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('footer').innerHTML = html;
+    })
+    .catch(err => console.error('Error cargando el footer:', err));
+}
+
+// ==========================================================
+// ✅ FUNCIÓN: Modo oscuro persistente
+// ==========================================================
 function setupDarkModeToggle() {
+  // Aplicar si estaba activo previamente
   if (localStorage.getItem('darkMode') === 'on') {
     document.body.classList.add('dark-mode');
   }
@@ -13,35 +66,9 @@ function setupDarkModeToggle() {
   }
 }
 
-// ✅ Función para cargar menú y configurar modo oscuro
-function loadMenu() {
-  fetch('menu.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('menu-container').innerHTML = html;
-      setupDarkModeToggle();
-    });
-}
-
-// ✅ Función para cargar footer
-function loadFooter() {
-  fetch('footer.html')
-    .then(res => res.text())
-    .then(html => {
-      const footerEl = document.getElementById('footer-container');
-      if (footerEl) {
-        footerEl.innerHTML = html;
-      } else {
-        // Si no hay contenedor, lo crea y lo agrega al final del body
-        const newFooter = document.createElement('div');
-        newFooter.id = 'footer-container';
-        newFooter.innerHTML = html;
-        document.body.appendChild(newFooter);
-      }
-    });
-}
-
-// ✅ Efectos en tarjetas al hacer hover
+// ==========================================================
+// ✅ FUNCIÓN: Efecto hover en tarjetas
+// ==========================================================
 function setupCardHoverEffects() {
   const cards = document.querySelectorAll('.card');
   cards.forEach(card => {
@@ -54,7 +81,9 @@ function setupCardHoverEffects() {
   });
 }
 
-// ✅ Carrusel personalizado
+// ==========================================================
+// ✅ FUNCIÓN: Carrusel personalizado
+// ==========================================================
 function setupCustomCarousel() {
   const images = document.querySelectorAll('.carousel-img');
   const prevBtn = document.querySelector('.carousel-btn.prev');
@@ -82,6 +111,7 @@ function setupCustomCarousel() {
       });
     }
 
+    // Cambio automático cada 5 segundos
     setInterval(() => {
       current = (current + 1) % images.length;
       showImage(current);
@@ -89,10 +119,13 @@ function setupCustomCarousel() {
   }
 }
 
-// ✅ Inicializador general
+// ==========================================================
+// ✅ INICIALIZADOR GENERAL
+// ==========================================================
 document.addEventListener('DOMContentLoaded', () => {
   loadMenu();
   loadFooter();
   setupCardHoverEffects();
   setupCustomCarousel();
 });
+
